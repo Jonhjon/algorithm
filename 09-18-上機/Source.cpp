@@ -23,7 +23,7 @@ void test_fun(int A, int B, int result) {
 		cout << "AND\n";
 		check = 1;
 	}
-	if ((A != B) == result)
+	if ((A ^ B) == result)
 	{
 		cout << "XOR\n";
 		check = 1;
