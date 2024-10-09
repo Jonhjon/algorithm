@@ -4,8 +4,8 @@
 #include <limits.h>
 using namespace std;
 
-// ­pºâ¸ó¹L¤¤ÂIªº³Ì¤j¤l¼Æ²Õ©M
-int find_Max_Crossing_Subarray(const std::vector<int>& nums, int low, int mid, int high) {
+
+int find_Max_Crossing_Subarray(const std::vector<int>& nums, int low, int mid, int high,int& left_index,int& right_index) {
     int left_sum = INT_MIN;
     int total = 0;
 
@@ -13,6 +13,7 @@ int find_Max_Crossing_Subarray(const std::vector<int>& nums, int low, int mid, i
         total += nums[i];
         if (total > left_sum) {
             left_sum = total;
+            left_index = i;
         }
     }
 
@@ -23,32 +24,51 @@ int find_Max_Crossing_Subarray(const std::vector<int>& nums, int low, int mid, i
         total += nums[i];
         if (total > right_sum) {
             right_sum = total;
+            right_index = i;
         }
     }
     return left_sum + right_sum;
 }
 
-// ¨Ï¥Î¤Àªvªk´M§ä³Ì¤j¤l¼Æ²Õ©M
-int find_Maximum_subarray(const vector<int>& nums, int low, int high) {
+
+int find_Maximum_subarray(const vector<int>& nums, int low, int high, int& start, int& end) {
     if (low == high) {
-        return nums[low]; // °ò©³±¡ªp¡A¥u¦³¤@­Ó¤¸¯À
+        start = low;  
+        end = low;
+        return nums[low]; 
     }
     else {
         int mid = (low + high) / 2;
-        int leftSum = find_Maximum_subarray(nums, low, mid);
-        int rightSum = find_Maximum_subarray(nums, mid + 1, high);
-        int crossSum = find_Max_Crossing_Subarray(nums, low, mid, high);
+        int left_start = -1, left_end = 1, right_start = -1, right_end = -1, cross_start=-1, cross_end = -1;
+        int left_sum = find_Maximum_subarray(nums, low, mid, left_start, left_end);
+        int  right_sum = find_Maximum_subarray(nums, mid + 1, high, right_start, right_end);
+        int cross_sum = find_Max_Crossing_Subarray(nums, low, mid, high, cross_start, cross_end);
 
-        return max(max(leftSum, rightSum), crossSum);
+        //return max(max(leftSum, rightSum), crossSum);
+        if (left_sum >= right_sum && left_sum >= cross_sum) {
+            start = left_start;
+            end = left_end;
+            return left_sum;
+        }
+        else if (right_sum >= left_sum && right_sum >= cross_sum) {
+            start = right_start;
+            end = right_end;
+            return right_sum;
+        }
+        else {
+            start = cross_start;
+            end = cross_end;
+            return cross_sum;
+        }
     }
 }
 
 int main() {
     vector<int> nums;
     fstream file;
-    string path = "Data.txt";
+    string path = "Data2.txt";
     int number = 0;
-
+    int start, end;
     file.open(path);
     while (file >> number) {
         nums.push_back(number);
@@ -60,8 +80,15 @@ int main() {
     }
     cout << endl;
 
-    int max_sum = find_Maximum_subarray(nums, 0, nums.size() - 1);
-    cout << "³Ì¤j¤l¼Æ²Õ©M¬O: " << max_sum << endl;
+    int max_sum = find_Maximum_subarray(nums, 0, nums.size() - 1, start, end);
+    cout << "å­é™£åˆ—æœ€å¤§å€¼: " << max_sum << endl;
+    cout << "é™£åˆ—å€é–“ : [";
+    for (int i = start; i <= end; i++)
+    {
+        cout << nums[i] << "  ";
+    }
+    cout << "]" << endl;
 
+    cout << start << " " << end << endl;
     return 0;
 }
