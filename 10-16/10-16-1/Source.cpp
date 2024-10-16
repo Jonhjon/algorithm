@@ -1,10 +1,11 @@
-﻿#include <iostream>
+#include <iostream>
 #include <fstream>
 #include <vector>
 #include <limits.h>
+#include<time.h>
 using namespace std;
 
-int** Read_File(string path,int &n) {
+int** Read_File(string path, int& n) {
     fstream file;
     //int n = 0;
     file.open(path);
@@ -31,7 +32,7 @@ int** Read_File(string path,int &n) {
     file.close();
     return A;
 }
-void Printf_matrix(int** A,int n) {
+void Printf_matrix(int** A, int n) {
     for (int i = 0; i < n; i++)
     {
         for (int j = 0; j < n; j++)
@@ -43,7 +44,7 @@ void Printf_matrix(int** A,int n) {
     }
     cout << endl;
 }
-void Free(int** data,int n) {
+void Free(int** data, int n) {
     for (int i = 0; i < n; i++)
         delete[] data[i];
     delete[] data;
@@ -56,7 +57,7 @@ int** creat_memory(int n) {
     }
     return C;
 }
-void matrix_add(int n, int **A, int **B, int **C) {
+void matrix_add(int n, int** A, int** B, int** C) {
     for (int i = 0; i < n; i++)
         for (int j = 0; j < n; j++)
             C[i][j] = A[i][j] + B[i][j];
@@ -69,9 +70,9 @@ void matrix_multiply_recursive(int n, int** A, int** B, int** C) {
     }
 
     int mid = n / 2;
-    int** A11 = creat_memory(mid),**A12 = creat_memory(mid), **A21 = creat_memory(mid), **A22 = creat_memory(mid);
-    int** B11 = creat_memory(mid), **B12 = creat_memory(mid), **B21 = creat_memory(mid), **B22 = creat_memory(mid);
-    int** C11 = creat_memory(mid), **C12 = creat_memory(mid), **C21 = creat_memory(mid), **C22 = creat_memory(mid);
+    int** A11 = creat_memory(mid), ** A12 = creat_memory(mid), ** A21 = creat_memory(mid), ** A22 = creat_memory(mid);
+    int** B11 = creat_memory(mid), ** B12 = creat_memory(mid), ** B21 = creat_memory(mid), ** B22 = creat_memory(mid);
+    int** C11 = creat_memory(mid), ** C12 = creat_memory(mid), ** C21 = creat_memory(mid), ** C22 = creat_memory(mid);
     int** temp = creat_memory(mid);
     // 分割矩阵
     for (int i = 0; i < mid; i++) {
@@ -112,31 +113,38 @@ void matrix_multiply_recursive(int n, int** A, int** B, int** C) {
             C[i + mid][j + mid] = C22[i][j];
         }
     }
-    Free(A11,mid);Free(A12, mid);Free(A21, mid);Free(A22, mid);
-    Free(B11, mid);Free(B12, mid);Free(B21, mid);Free(B22, mid); 
-    Free(C11, mid);Free(C12, mid);Free(C21, mid);Free(C22, mid);
+    Free(A11, mid); Free(A12, mid); Free(A21, mid); Free(A22, mid);
+    Free(B11, mid); Free(B12, mid); Free(B21, mid); Free(B22, mid);
+    Free(C11, mid); Free(C12, mid); Free(C21, mid); Free(C22, mid);
     Free(temp, mid);
 }
 
-
-
-
-
 int main() {
-   
+
     fstream file;
-    string path = "Data/2A.txt";
-    string path2 = "Data/2B.txt";
+    string path = "Data/1A.txt";
+    string path2 = "Data/1B.txt";
+    clock_t start_t = 0, finish_t = 0;
+
     int n = 0, n2 = 0;
-    int** A=NULL, ** B =NULL, ** C=NULL;
-    
-    A = Read_File(path , n );
+    int** A = NULL, ** B = NULL, ** C = NULL;
+
+    A = Read_File(path, n);
     Printf_matrix(A, n);
     B = Read_File(path2, n2);
     Printf_matrix(B, n2);
     C = creat_memory(n);
-    matrix_multiply_recursive(n, A, B, C);
+    start_t = clock();
+    for ( int i = 0; i < 10000; i++)
+    {
+        matrix_multiply_recursive(n, A, B, C);
+        finish_t = clock();
+    }
     Printf_matrix(C, n);
+    double Time = (double)(finish_t - start_t) / CLOCKS_PER_SEC;
+   // Printf_matrix(C, n);
+    cout << "時間為 : " << Time;
+
 
     Free(A, n);
     Free(B, n2);
