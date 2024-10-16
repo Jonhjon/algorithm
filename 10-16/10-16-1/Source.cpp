@@ -88,15 +88,6 @@ void matrix_multiply_recursive(int n, int** A, int** B, int** C) {
         }
     }
 
-    // 递归计算
-    /*matrix_multiply_recursive(mid, A11, B11, C11);
-    matrix_multiply_recursive(mid, A12, B21, C11);
-    matrix_multiply_recursive(mid, A11, B12, C12);
-    matrix_multiply_recursive(mid, A12, B22, C12);
-    matrix_multiply_recursive(mid, A21, B11, C21);
-    matrix_multiply_recursive(mid, A22, B21, C21);
-    matrix_multiply_recursive(mid, A21, B12, C22);
-    matrix_multiply_recursive(mid, A22, B22, C22);*/
     matrix_multiply_recursive(mid, A11, B11, C11);
     matrix_multiply_recursive(mid, A12, B21, temp);
     matrix_add(mid, C11, temp, C11);
