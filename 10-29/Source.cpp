@@ -1,4 +1,4 @@
-﻿#include<iostream>
+#include<iostream>
 #include<vector>
 #include<fstream>
 
@@ -31,9 +31,9 @@ void Quicksort(vector<int> &arr, int p, int r) {
 
 int main() {
 	fstream file;
-	string path = "10_23.txt";
+	string path = "10-30-1.txt";
 	vector<int> arr;
-	int num = 0;
+	int num = 0,r=0;
 	
 	file.open(path);
 	if (!file.is_open())
@@ -42,15 +42,18 @@ int main() {
 		file.close();
 		return 0;
 	}
+	file >> r;
 	while (file >>num)
 	{
 		arr.push_back(num);
 	}
+	cout << "before sort :";
 	for (int num : arr) {
 		cout << num << " ";
 	}
 	cout << endl;
-	Quicksort(arr, 0, arr.size()-1);
+	Quicksort(arr, 0, r - 1);
+	cout << "after sort : ";
 	for (int num : arr) {
 		cout << num << " ";
 	}
