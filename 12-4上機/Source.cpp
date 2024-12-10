@@ -2,14 +2,6 @@
 #include <string>
 using namespace std;
 
-char F(char C) {
-    if (C == 1)
-        return '¡ø';
-    if (C == 2)
-        return '¡ô';
-    else return '¡ö';
-}
-
 void LCS(string str1, string str2, string b[][20], int c[][20]) {
    
     int m = str1.size() + 1;
@@ -28,15 +20,15 @@ void LCS(string str1, string str2, string b[][20], int c[][20]) {
         for (int j = 1; j < n; j++) {
             if (str1[i-1] == str2[j-1]) {
                 c[i][j] = c[i - 1][j - 1] + 1;
-                b[i][j] = "¡ø";//'¡ø'
+                b[i][j] = "Â¡Ã¸";//'Â¡Ã¸'
             }
             else if (c[i - 1][j] >= c[i][j - 1]) {
                 c[i][j] = c[i - 1][j];
-                b[i][j] = "¡ô";//'¡ô'
+                b[i][j] = "Â¡Ã´";//'Â¡Ã´'
             }
             else {
                 c[i][j] = c[i][j - 1];
-                b[i][j] = "¡ö";//'¡ö'
+                b[i][j] = "Â¡Ã¶";//'Â¡Ã¶'
             }
         }
     }
@@ -65,17 +57,16 @@ void LCS(string str1, string str2, string b[][20], int c[][20]) {
         cout << endl;
     }
 }
-int Count = 0;
+
 void Print_LCS(string b[][20], string X, int i, int j) {
     if (i == 0 || j == 0) {
         return;
     }
-    if (b[i][j] == "¡ø") {
+    if (b[i][j] == "Â¡Ã¸") {
         Print_LCS(b, X, i - 1, j - 1);
         cout << X[i-1];
-        Count++;
     }
-    else if (b[i][j] == "¡ô") {
+    else if (b[i][j] == "Â¡Ã´") {
         Print_LCS(b, X, i - 1, j);
     }
     else {
@@ -100,7 +91,7 @@ int main() {
     cout << "LCS (s1,s2): ";
     Print_LCS(b, str1, str1.size(), str2.size());
     cout << endl;
-    cout << "Lenth of the LCS : "<< Count;
+    cout << "Lenth of the LCS : "<< c[str1.size()][str2.size()];
 
     
 
