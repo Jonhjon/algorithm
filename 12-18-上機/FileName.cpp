@@ -45,13 +45,13 @@ void Quicksort(edge edges[], int p, int r) {
 }
 void KruskalMST(edge edges[], int edge_count, int vector) {
 	int parent[20] = { 0 };
-	int rank[20] = { 0 };
+	//int rank[20] = { 0 };
 	//bool *vist=new bool[vector];
 
 	for (int i = 0; i < vector; i++)
 	{
 		parent[i] = i;
-		rank[i] = 0;
+		//rank[i] = 0;
 		//vist[i] = false;
 	}
 
@@ -59,8 +59,9 @@ void KruskalMST(edge edges[], int edge_count, int vector) {
 	int e = 0;
 	int i = 0;
 	cout << "point1	point2	cost\n";
+	int total_weight = 0;
 
-	while (e < vector - 1 && i < edge_count)
+	while (e < vector - 1)
 	{
 		edge edge_next = edges[i++];
 
@@ -73,15 +74,8 @@ void KruskalMST(edge edges[], int edge_count, int vector) {
 			cout << edge_next.from << "\t" << edge_next.to << "\t" << edge_next.weight << endl;
 			parent[y] = x;
 
-			//Union(parent,rank,x,y);
+			total_weight += edge_next.weight;
 		}
-	}
-	int total_weight = 0;
-
-	for (int i = 0; i < e; i++)
-	{
-		//cout << result[i].from << "\t" << result[i].to << "\t" << result[i].weight << endl;
-		total_weight += result[i].weight;
 	}
 	cout << "\ntotal weight : " << total_weight;
 }
@@ -115,9 +109,15 @@ int main()
 			}
 		}
 	}
-	Quicksort(edge, 0, count - 1);
-	//sort(edge, edge + count, weight_compare);
+
 	cout << "point1	point2	cost\n";
+	for (int i = 0; i < count; i++)//sort前
+	{
+		cout << edge[i].from << "\t" << edge[i].to << "\t" << edge[i].weight << endl;
+	}
+	Quicksort(edge, 0, count - 1);
+
+	cout << "\nSorted:\npoint1	point2	cost\n";//sort後
 	for (int i = 0; i < count; i++)
 	{
 		cout << edge[i].from << "\t" << edge[i].to << "\t" << edge[i].weight << endl;
