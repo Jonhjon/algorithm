@@ -45,14 +45,10 @@ void Quicksort(edge edges[], int p, int r) {
 }
 void KruskalMST(edge edges[], int edge_count, int vector) {
 	int parent[20] = { 0 };
-	//int rank[20] = { 0 };
-	//bool *vist=new bool[vector];
 
 	for (int i = 0; i < vector; i++)
 	{
 		parent[i] = i;
-		//rank[i] = 0;
-		//vist[i] = false;
 	}
 
 	edge result[Max];
