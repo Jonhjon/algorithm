@@ -6,26 +6,32 @@
 
 using namespace std;
 
-bool BFS(vector<vector<int>> matrix,vector<vector<int>> &flow, int start,int end,vector<int>&parent) {
+bool BFS(vector<vector<int>> matrix, vector<vector<int>>& flow, int start, int end, vector<int>& parent) {
 	int n = flow.size();
-	vector<bool> vist(n, false);
+	vector<bool> visit(n, false);
 	queue<int>q;
+	int queue[10] = { 0 };
+	int rear = 0,front = -1;
 
-	q.push(start);
-	vist[start] = true;
+	//q.push(start);
+	queue[rear++] = start;
+	
+	visit[start] = true;
 	parent[start] = -1;
 	int min_flow = 0;
-	while (!q.empty())
+	//while (!q.empty())
+	while (front < rear)
 	{
-		int u = q.front();
-		q.pop();
-
+		//int u = q.front();
+		int u = queue[++front];
+		//q.pop();
 		for (int i = 0; i < n; i++)
 		{
-			if (!vist[i] && (flow[u][i] != matrix[u][i]))
+			if (!visit[i] && (flow[u][i] != matrix[u][i]))
 			{
-				q.push(i);
-				vist[i] = true;
+				//q.push(i);
+				queue[rear++] = i;
+				visit[i] = true;
 				parent[i] = u;
 
 				if (i == end)
@@ -43,13 +49,13 @@ int Ford_Fulkerson(vector<vector<int>> matrix, vector<vector<int>>& flow, int st
 	vector<int>parent(n);
 	int maxflow = 0;
 
-	while (BFS(matrix,flow,start,end,parent))
+	while (BFS(matrix, flow, start, end, parent))
 	{
 		int pathflow = INT_MAX;
 		for (int i = end; i != start; i = parent[i])
 		{
 			int u = parent[i];
-			pathflow = min(pathflow, matrix[u][i]);
+			pathflow = min(pathflow, matrix[u][i]-flow[u][i]);
 		}
 
 		for (int i = end; i != start; i = parent[i])
@@ -61,12 +67,12 @@ int Ford_Fulkerson(vector<vector<int>> matrix, vector<vector<int>>& flow, int st
 	}
 	return maxflow;
 }
-void Print_matrix(vector<vector<int>> matrix, vector<vector<int>> flow,int len) {
+void Print_matrix(vector<vector<int>> matrix, vector<vector<int>> flow, int len) {
 	for (int i = 0; i < len; i++)
 	{
 		for (int j = 0; j < len; j++)
 		{
-			cout <<setw(3)<< flow[i][j] << "/" << setw(2) << matrix[i][j] << ",";
+			cout << setw(3) << flow[i][j] << "/" << setw(2) << matrix[i][j] << ",";
 		}cout << endl;
 	}
 }
@@ -77,7 +83,6 @@ int main() {
 	file.open(path);
 	int start = 0;
 	int end = 5;
-	
 
 	if (!file.is_open())
 	{
@@ -99,9 +104,7 @@ int main() {
 
 	int max_flow = Ford_Fulkerson(matrix, flow, start, end);
 	Print_matrix(matrix, flow, len);
-	cout << "Maximum Flow : " << max_flow<<endl;
-
-
+	cout <<endl<< "Maximum Flow : " << max_flow << endl;
 
 	return 0;
 }
