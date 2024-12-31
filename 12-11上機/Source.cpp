@@ -49,7 +49,7 @@ curriculum *ActivitySelection(curriculum Data[col],int &counts) {
     result[counts] = Data[0];
     for (int i = 1; i < col; i++)
     {
-        if (result[counts].end < Data[i].start)
+        if (result[counts].end <= Data[i].start)
         {
             (counts)++;
             result[counts] = Data[i];
